@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartAgro.Pages.NotificationPage"
+             Title="NotificationPage"
+             xmlns:sf="clr-namespace:Syncfusion.Maui.Core;assembly=Syncfusion.Maui.Core"
+             xmlns:toolkit="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             NavigationPage.HasNavigationBar="False">
+
+    <ScrollView>
+        <StackLayout>
+
+            <StackLayout Padding="30" Spacing="30">
+                <StackLayout Orientation="Horizontal" Spacing="30">
+
+                    <Label
+Text="{StaticResource SolidIconAngleLeft}"
+FontSize="32"
+HorizontalTextAlignment="Center"
+VerticalTextAlignment="Center"
+HorizontalOptions="Start">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label 
+    Text="Últimas atualizações!" 
+    HorizontalOptions="StartAndExpand"
+    VerticalOptions="CenterAndExpand"
+    FontSize="20"
+    FontFamily="{StaticResource semibold}"
+/>
+                </StackLayout>
+
+            </StackLayout>
+
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" x:Name="Loading">
+                <ActivityIndicator Color="{StaticResource Primary}" IsRunning="True" IsVisible="True" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <CollectionView x:Name="notificationView" IsGrouped="True">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="0" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.GroupHeaderTemplate >
+                    <DataTemplate>
+                        <Label Text="{Binding GroupTitle}"
+                            FontAttributes="Bold"
+                            FontSize="18" 
+                                   Margin="25,10"/>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="25,10">
+
+
+                            <Frame 
+                                CornerRadius="16" 
+                                   BorderColor="Transparent"
+                                   Padding="20" HorizontalOptions="Fill"
+                                   BackgroundColor="{StaticResource White}"
+                                   HasShadow="True"
+                                   Shadow="{StaticResource Shadow}">
+
+                                <StackLayout Spacing="10">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <HorizontalStackLayout Spacing="15" HorizontalOptions="FillAndExpand">
+                                        <Frame
+                            	    WidthRequest="40"
+                            	    HeightRequest="40"
+                                   BorderColor="Transparent"
+                                            
+                            	    CornerRadius="8"
+                                            Padding="0">
+                                            <Frame.Triggers>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding TipoNotificacaoId}" Value="3">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource Red}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding TipoNotificacaoId}" Value="2">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource Yellow}"/>
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding TipoNotificacaoId}" Value="1">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+                                                </DataTrigger>
+                                            </Frame.Triggers>
+                                            <Label 
+                                	    TextColor="{StaticResource DarkRed}" 
+                                	    FontSize="24"   
+                                	    FontAttributes="Bold"
+                                                HorizontalOptions="CenterAndExpand"
+                                                VerticalOptions="CenterAndExpand"
+                                	    VerticalTextAlignment="Center" 
+                                	    HorizontalTextAlignment="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding TipoNotificacaoId}" Value="3">
+                                                        <Setter Property="Text" Value="{StaticResource SolidIconExclamation}" />
+                                                        <Setter Property="TextColor" Value="{StaticResource DarkRed}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding TipoNotificacaoId}" Value="2">
+                                                        <Setter Property="Text" Value="{StaticResource IconDollarSign}" />
+                                                        <Setter Property="TextColor" Value="{StaticResource DarkYellow}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding TipoNotificacaoId}" Value="1">
+                                                        <Setter Property="Text" Value="{StaticResource SolidIconCheck}" />
+                                                        <Setter Property="TextColor" Value="{StaticResource Tertiary}"/>
+                                                    </DataTrigger >
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Frame>
+                                        <Label Margin="120, 0, 0, 0" 
+                                        HorizontalOptions="End"
+                                        Text="{Binding DataCriacao, StringFormat='Recebido às {0:HH:mm} em {0:dd/MM}'}"
+                                        TextColor="{StaticResource DarkRed}" 
+                                        FontAttributes="Bold" 
+                                        FontSize="13">
+                                        </Label>
+                                    </HorizontalStackLayout>
+
+                                    <Label  
+                                Style="{StaticResource Subtitulo}" 
+                                WidthRequest="290">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span TextColor="Black" Text="O nível de "/>
+                                                <Span TextColor="Black" FontAttributes="Bold" Text="{Binding nome}"/>
+                                                <Span TextColor="Black" Text=" na baia "/>
+                                                <Span TextColor="Black" FontAttributes="Bold" Text="{Binding LogsSensor.Sensor.Nome}"/>
+                                                <Span TextColor="Black" Text="  "/>
+                                                <Span TextColor="Black" Text="{Binding Mensagem}"/>
+                                                <Span TextColor="Black" Text=" Atual: "/>
+                                                <Span TextColor="Black" FontAttributes="Bold" Text="{Binding atual}"/>
+                                                <Span TextColor="Black" Text=" Ideal: "/>
+                                                <Span TextColor="Black" FontAttributes="Bold" Text="{Binding ideal}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
